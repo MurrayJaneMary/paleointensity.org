@@ -5,6 +5,20 @@
 # For each of the specimens ( QCR13-5A & QCR13-6A )
 # here is the full data set, and a custom made selection
 
+_data_MARYTEST = [
+    ["MARY", "TEST", 0, 0, -5978.05, 1, 0, 0, 0, "2023-11-24","15:11:43", 0, 0, 0, 0, 0, 0],
+    ["MARY", "TEST", 0, 0, -5793.3, 1, 0, 0, 0, "2023-11-24","15:11:43", 5, 0, 0, 0, 0, 0],
+    ["MARY", "TEST", 0, 0, -5436.76, 1, 0, 0, 0, "2023-11-24","15:11:43", 5, 40, 0, 90, 1, 5],
+    ["MARY", "TEST", 0, 0, -5042.49, 1, 0, 0, 0, "2023-11-24","15:11:43", 10, 40, 0, 90, 1, 5],
+    ["MARY", "TEST", 0, 0, -4918.99, 1, 0, 0, 0, "2023-11-24","15:11:43", 10, 0, 0, 0, 0, 10],
+    ["MARY", "TEST", 0, 0, -4892.79, 1, 0, 0, 0, "2023-11-24","15:11:43", 5, 40, 0, 90, 2, 10],
+    ["MARY", "TEST", 0, 0, -4562.5, 1, 0, 0, 0, "2023-11-24","15:11:43", 20, 0, 0, 0, 0, 5],
+    ["MARY", "TEST", 0, 0, -3638.43, 1, 0, 0, 0, "2023-11-24","15:11:43", 20, 40, 0, 90, 1, 20],
+    ["MARY", "TEST", 0, 0, -3173.23, 1, 0, 0, 0, "2023-11-24","15:11:43", 25, 40, 0, 90, 1, 20],
+    ["MARY", "TEST", 0, 0, -3339.88, 1, 0, 0, 0, "2023-11-24","15:11:43", 25, 0, 0, 90, 0, 25],
+    ["MARY", "TEST", 0, 0, -3205.59, 1, 0, 0, 0, "2023-11-24","15:11:43", 10, 40, 0, 90, 2, 25],
+]
+
 
 _data_QCR135A = [
     ["QCR13", "5A", 9.22E-08, -1.58E-08, -1.61E-07, 0.99, 99.72723347, -59.86593047, 1.86274E-07, "2017-03-20", "17:04", 0, 0, 0, 0, 0, 0],
@@ -129,6 +143,7 @@ _data_QCR136A_selection = [
 _dataset_dict = {
     "QCR135A": _data_QCR135A,
     "QCR136A": _data_QCR136A,
+    "MARYTEST": _data_MARYTEST,
 
 }
 
@@ -145,7 +160,7 @@ def get(specimen, selection=False):
     dict = _dataset_dict
     if selection:
         dict = _dataset_selection_dict
-
+   
     # check if the specimen is in the dict
     if (specimen in dict) == False:
         print("WARNING: the specimen %s is not present in the demo data, asked for a selection: %s" % (specimen, selection))

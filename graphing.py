@@ -144,6 +144,7 @@ def plot_arai(data):
     # print("y",y)
     # print("xprev",xprev)
     # print("yprev",yprev)
+    print(len(temppTRM))
     for le in range(len(temppTRM)):
         ptrmCheck.append([temppTRM[le], x[le], y[le], xprev[le], yprev[le]])  # the above calculated values to the ptrmCheck array
 
