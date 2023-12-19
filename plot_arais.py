@@ -2,7 +2,56 @@ import demo_data_classical_Thellier
 import graphing
 import matplotlib.pyplot as plt
 
-specimen = demo_data_classical_Thellier.get("MARYTEST")
+def reformat_th_to_data(filename):
+    with open(filename, 'r') as infile:
+        _data = []
+        nline = -1 #I want it to be zero-indexed, but I also need to increment at the start of the loop because of the continue statements
+        temperatures = []
+        for line in infile:
+            nline +=1
+            print(f'line number {nline}: {line}')
+            values = line.strip().split(',')
+            print("these are words")
+            print(values[0])
+            if nline ==0:
+                temperature = 0
+                temperatures.append(temperature)
+                continue
+            if nline == 1:
+                samplename = values[0]
+                temperature = 0
+                temperatures.append(temperature)
+                continue
+
+            if values[0] == "9999":
+                break
+
+
+            temperature = str(values[0]).split('.')[0]
+            temperatures.append(temperature)
+            steptype = str(values[0]).split('.')[1]
+
+            if steptype == "00": #z step
+                dataline = [samplename, samplename, values[1], values[2], values[3], values[4], 0, 0, 0, \
+                            values[5], values[6], temperature, 0, 0, 0, 0, temperatures[nline-1]]
+            
+            if steptype == "11": #I step
+                dataline = [samplename, samplename, values[1], values[2], values[3], values[4], 0, 0, 0, \
+                            values[5], values[6], temperature, 40, 0, 90, 1, temperatures[nline-1]]
+                
+            if steptype == "12": #P step
+                dataline = [samplename, samplename, values[1], values[2], values[3], values[4], 0, 0, 0, \
+                            values[5], values[6], temperature, 40, 0, 90, 2, temperatures[nline-1]]
+
+            _data.append(dataline)
+    return(_data)
+
+_dataTest1 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT18_lambda05_antiparallel_B1.th")
+
+#specimen = demo_data_classical_Thellier.get("MARYTEST")
+
+specimen = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest1)
+
 
 AraiData = graphing.plot_arai(specimen)
 
