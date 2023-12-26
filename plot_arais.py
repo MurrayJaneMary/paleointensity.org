@@ -13,7 +13,6 @@ def reformat_th_to_data(filename):
             nline +=1
             print(f'line number {nline}: {line}')
             values = line.strip().split(',')
-            print("these are words")
             print(values[0])
             if nline ==0:
                 temperature = 0
@@ -54,6 +53,10 @@ def reformat_th_to_data(filename):
             _data.append(dataline)
     return(_data)
 
+def straight_line(m, x, c):
+    y=m*x+c
+    return y
+
 def plot_data(*AraiData):
     plt.figure()
 
@@ -90,10 +93,17 @@ def plot_data(*AraiData):
             plt.annotate('', xy=start_point, xytext=end_point, arrowprops=dict(alpha= 0.4, facecolor=colour, arrowstyle='<-', connectionstyle="angle,angleA=-90,angleB=180,rad=0"))
             plt.plot(ptrmCheck[i][1], ptrmCheck[i][2], marker='^', color=colour, alpha=0.4)
 
+        plt.plot([0,1], [1,0], marker="", color='black')
+
         
        # Calculate the area under the curve using trapezoidal integration
         area = trapz(y_values, x=x_values)
-        print(f'Area for {legend_label} is {area}, theorectical area 0.5 ')
+        
+        print(f'Area for {legend_label} is {area}, theorectical area 0.5  so a difference of {0.5 - area}')
+
+        area_difference = calc_area(x_values, y_values)
+        print(f'Area difference for {legend_label} is {area_difference}')
+
         
     plt.xlabel('pTRM gained/NRM0')
     plt.ylabel('NRM remaining/NRM0')
@@ -102,20 +112,60 @@ def plot_data(*AraiData):
 
     plt.show()
 
+def calc_area(x_values, y_values):
+    #calculate the difference between the points and an ideal line
+    area_total = 0
+    m = (y_values[-1]-y_values[0])/x_values[-1]
+    #print(f'm is {m}')
+    for i in range(len(x_values)-1):
+        #print (f'{i} out of {range(len(x_values))}')
+        ideal_y1 = m*x_values[i] + y_values[0]
+        ideal_y2 = m*x_values[i+1] + y_values[0]
+        diff_y1 = y_values[i] - ideal_y1
+        diff_y2 = y_values[i+1] - ideal_y2
 
-_dataTest1 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/MMSS12-7f.th")
-_dataTest2 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT11_lambda02_antiparallel.th")
-#specimen = demo_data_classical_Thellier.get("MARYTEST")
+        #print(y_values[i], ideal_y1)
+        #print(y_values[i+1], ideal_y2)
+        #print(x_values[i], x_values[i+1], diff_y1, diff_y2)
+        
+        if (diff_y1*diff_y2) < 0 : # if the lines intersect, one difference will be positive and the other negative
+            area = 0.5*(x_values[i+1]-x_values[i])*(diff_y2**2 + diff_y1**2)/(abs(diff_y2) + abs(diff_y1))
+            ##Pretty sure this formula is correct but I'd like a better way to double check it
+        else:
+            area= 0.5*(abs(diff_y1)+abs(diff_y2))*(x_values[i+1]-x_values[i])
+        
+        ##importanly, these areas could be negative if (x_values[i+1]-x_values[i]) is negative. This is important because
+            ## it accounts for the case where the line goes backwards.  
+        area_total += area 
+        #print(area_total)
+    return area_total
 
-specimen1 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest1)
-AraiData1 = graphing.plot_arai(specimen1)
-print(AraiData1)
-#plot_data(AraiData1)
 
-specimen2 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest2)
-AraiData2 = graphing.plot_arai(specimen2)
-print(AraiData2)
-#plot_data(AraiData2)
 
-plot_data((AraiData1, "MMSS12.7f - measured data", "royalblue"), (AraiData2, "modres_customT11_lambda02_antiparallel - modelled results", "orange"))
+def main():
+    _dataTest1 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/MMSS12-7f.th")
+    _dataTest2 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT11_lambda02_antiparallel.th")
+    #specimen = demo_data_classical_Thellier.get("MARYTEST")
 
+    specimen1 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest1)
+    AraiData1 = graphing.plot_arai(specimen1)
+    print(AraiData1)
+    #plot_data(AraiData1)
+
+    specimen2 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest2)
+    AraiData2 = graphing.plot_arai(specimen2)
+    print(AraiData2)
+    #plot_data(AraiData2)
+
+    plot_data((AraiData1, "MMSS12.7f - measured data", "royalblue"), (AraiData2, "modres_customT11_lambda02_antiparallel - modelled results", "orange"))
+
+test_x = [0,1,3,2,5]
+test_y = [10,4,8,2,0]
+
+main() 
+
+##Testing
+#test_x = [0,1,3,2,5]
+#test_y = [10,4,8,2,0]
+#test_area = calc_area(test_x, test_y)
+#print(test_area)
