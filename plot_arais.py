@@ -58,7 +58,7 @@ def straight_line(m, x, c):
     return y
 
 def plot_data(*AraiData):
-    plt.figure()
+    plt.figure(figsize=(8,5))
 
     for data, legend_label, colour in AraiData:
         ptrm_gained = data[0]
@@ -93,7 +93,7 @@ def plot_data(*AraiData):
             plt.annotate('', xy=start_point, xytext=end_point, arrowprops=dict(alpha= 0.4, facecolor=colour, arrowstyle='<-', connectionstyle="angle,angleA=-90,angleB=180,rad=0"))
             plt.plot(ptrmCheck[i][1], ptrmCheck[i][2], marker='^', color=colour, alpha=0.4)
 
-        plt.plot([0,1], [1,0], marker="", color='black')
+       
 
         
        # Calculate the area under the curve using trapezoidal integration
@@ -134,7 +134,7 @@ def calc_area(x_values, y_values):
         else:
             area= 0.5*(abs(diff_y1)+abs(diff_y2))*(x_values[i+1]-x_values[i])
         
-        ##importanly, these areas could be negative if (x_values[i+1]-x_values[i]) is negative. This is important because
+        ##importantly, these areas could be negative if (x_values[i+1]-x_values[i]) is negative. This is important because
             ## it accounts for the case where the line goes backwards.  
         area_total += area 
         #print(area_total)
@@ -157,15 +157,14 @@ def main():
     print(AraiData2)
     #plot_data(AraiData2)
 
-    plot_data((AraiData1, "MMSS12.7f - measured data", "royalblue"), (AraiData2, "modres_customT11_lambda02_antiparallel - modelled results", "orange"))
+    plot_data((AraiData1, "MMSS12.7f - measured data", "royalblue"), (AraiData2, "modres_customT11_lambda02_antiparallel_B1 - modelled results", "orange"))
 
-test_x = [0,1,3,2,5]
-test_y = [10,4,8,2,0]
+
 
 main() 
 
 ##Testing
 #test_x = [0,1,3,2,5]
-#test_y = [10,4,8,2,0]
+#test_y = [10,10,8,2,0]
 #test_area = calc_area(test_x, test_y)
 #print(test_area)
