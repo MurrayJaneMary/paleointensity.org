@@ -11,9 +11,9 @@ def reformat_th_to_data(filename):
         temperatures = []
         for line in infile:
             nline +=1
-            print(f'line number {nline}: {line}')
+            #print(f'line number {nline}: {line}')
             values = line.strip().split(',')
-            print(values[0])
+            #print(values[0])
             if nline ==0:
                 temperature = 0
                 temperatures.append(temperature)
@@ -140,9 +140,41 @@ def calc_area(x_values, y_values):
         #print(area_total)
     return area_total
 
+def run_together(filepath):
+    """Inputs filepath to a .th file and returns formatted datapoints for an Arai plot"""
+    _data = reformat_th_to_data(filepath)
+    specimen = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_data)
+    AraiData = graphing.plot_arai(specimen)
+    return AraiData
+
 
 
 def main():
+
+    AraiData_lambda001_parallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_parallel_B1.th")
+    AraiData_lambda01_parallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda01_parallel_B1.th")
+    AraiData_lambda05_parallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda05_parallel_B1.th")
+
+    AraiData_lambda001_perpendicular = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_perpendicular_B1.th")
+    AraiData_lambda01_perpendicular = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda01_perpendicular_B1.th")
+    AraiData_lambda05_perpendicular = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda05_perpendicular_B1.th")
+
+    AraiData_lambda001_antiparallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_antiparallel_B1.th")
+    AraiData_lambda01_antiparallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda01_antiparallel_B1.th")
+    AraiData_lambda05_antiparallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda05_antiparallel_B1.th")
+
+    print(AraiData_lambda05_perpendicular)
+    plot_data(
+        (AraiData_lambda001_parallel, "lambda 0.01, parallel", "blue"),
+        (AraiData_lambda01_parallel, "lambda 0.1, parallel", "blue"),
+        (AraiData_lambda05_parallel, "lambda 0.5, parallel", "blue"),
+        (AraiData_lambda001_perpendicular, "lambda 0.01, perpendicular", "blue"),
+        (AraiData_lambda01_perpendicular, "lambda 0.1, perpendicular", "blue"),
+        (AraiData_lambda05_perpendicular, "lambda 0.5, perpendicular", "blue"),
+        (AraiData_lambda001_antiparallel, "lambda 0.01, antiparallel", "blue"),
+        (AraiData_lambda01_antiparallel, "lambda 0.1, antiparallel", "blue"),
+        (AraiData_lambda05_antiparallel, "lambda 0.5, antiparallel", "blue")
+    )
     _dataTest1 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/MMSS12-7f.th")
     _dataTest2 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT11_lambda02_antiparallel.th")
     #specimen = demo_data_classical_Thellier.get("MARYTEST")
