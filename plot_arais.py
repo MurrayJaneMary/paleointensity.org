@@ -1,3 +1,11 @@
+"""
+Code to directly plot arai plots from .th files, based on paleointensity.org code
+
+Author: Mary Murray 
+Date: December 2023
+"""
+
+
 import demo_data_classical_Thellier
 import graphing
 import matplotlib.pyplot as plt
@@ -57,7 +65,8 @@ def straight_line(m, x, c):
     y=m*x+c
     return y
 
-def plot_data(*AraiData):
+def plot_data(startStep=0, endStep=100, *AraiData):
+    #print(AraiData)
     plt.figure(figsize=(8,5))
 
     for data, legend_label, colour in AraiData:
@@ -72,18 +81,25 @@ def plot_data(*AraiData):
         step_labels = [0]  # Initialize with the starting point
 
         for step in order_steps:
-            step_number = step[0]
+            step_temp = step[0]
             for xstep, xvalue in ptrm_gained:
-                if xstep == step_number:
-                    x_values.append(xvalue)  
+                if xstep == step_temp:
+                    x_values.append(xvalue)
             for ystep, yvalue in nrm_rem:
-                if ystep == step_number:
+                if ystep == step_temp:
                     y_values.append(yvalue)
-                    step_labels.append(step_number)
-        plt.plot(x_values, y_values, marker='o', label=legend_label, color=colour)
+                    step_labels.append(step_temp)
+
+        plt.plot(x_values, y_values, marker='.', label=legend_label, color=colour, alpha=0.3)
+        plt.plot(x_values[startStep:endStep], y_values[startStep:endStep], marker='o', label=legend_label, color=colour, alpha=0.7)
+        print("/n")
+        print(legend_label, "/n")
+        print(x_values, y_values)
+        print("/n")
+        print(x_values[startStep:endStep], y_values[startStep:endStep])
 
         #for i, label in enumerate(step_labels):
-        #    plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  # Add label for each point
+            #plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  # Add label for each point
         
         # Add pTRM check line
         for i in range(len(ptrmCheck)):        
@@ -104,7 +120,7 @@ def plot_data(*AraiData):
         area_difference = calc_area(x_values, y_values)
         print(f'Area difference for {legend_label} is {area_difference}')
 
-        
+    plt.ylim(0, None)
     plt.xlabel('pTRM gained/NRM0')
     plt.ylabel('NRM remaining/NRM0')
     plt.legend()
@@ -143,6 +159,8 @@ def calc_area(x_values, y_values):
 def run_together(filepath):
     """Inputs filepath to a .th file and returns formatted datapoints for an Arai plot"""
     _data = reformat_th_to_data(filepath)
+    print(filepath)
+    print(_data)
     specimen = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_data)
     AraiData = graphing.plot_arai(specimen)
     return AraiData
@@ -151,47 +169,47 @@ def run_together(filepath):
 
 def main():
 
-    AraiData_lambda001_parallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_parallel_B1.th")
-    AraiData_lambda01_parallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda01_parallel_B1.th")
-    AraiData_lambda05_parallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda05_parallel_B1.th")
+    # Generate a sequential colormap
+    cmap = plt.get_cmap('viridis')
+    num_colors = 3  # Number of datasets to plot
+    colors = [cmap(i / num_colors) for i in range(num_colors)]
 
-    AraiData_lambda001_perpendicular = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_perpendicular_B1.th")
-    AraiData_lambda01_perpendicular = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda01_perpendicular_B1.th")
-    AraiData_lambda05_perpendicular = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda05_perpendicular_B1.th")
 
-    AraiData_lambda001_antiparallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_antiparallel_B1.th")
-    AraiData_lambda01_antiparallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda01_antiparallel_B1.th")
-    AraiData_lambda05_antiparallel = run_together("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda05_antiparallel_B1.th")
+    AraiData_exp = run_together(f"{folderPath}MMSS13-2A.th")
+    AraiData_lambda020 = run_together(f"{folderPath}modres_customT32_lambda020_theta162.th")
+    AraiData_lambda040 = run_together(f"{folderPath}modres_customT32_lambda040_theta162.th")
+    AraiData_lambda060 = run_together(f"{folderPath}modres_customT32_lambda060_theta162.th")
+    
 
-    print(AraiData_lambda05_perpendicular)
-    plot_data(
-        (AraiData_lambda001_parallel, "lambda 0.01, parallel", "blue"),
-        (AraiData_lambda01_parallel, "lambda 0.1, parallel", "blue"),
-        (AraiData_lambda05_parallel, "lambda 0.5, parallel", "blue"),
-        (AraiData_lambda001_perpendicular, "lambda 0.01, perpendicular", "blue"),
-        (AraiData_lambda01_perpendicular, "lambda 0.1, perpendicular", "blue"),
-        (AraiData_lambda05_perpendicular, "lambda 0.5, perpendicular", "blue"),
-        (AraiData_lambda001_antiparallel, "lambda 0.01, antiparallel", "blue"),
-        (AraiData_lambda01_antiparallel, "lambda 0.1, antiparallel", "blue"),
-        (AraiData_lambda05_antiparallel, "lambda 0.5, antiparallel", "blue")
+
+
+    ##Plot a bunch of models
+    plot_data(0, 20,
+        (AraiData_lambda020, "lambda 0.20, theta162, customT32", colors[0]),
+        (AraiData_lambda040, "lambda 0.40, theta162, customT32", colors[1]),
+        (AraiData_lambda060, "lambda 0.60, theta162, customT32", colors[2]),
+        (AraiData_exp, "MMSS13-2A - measured data", "orange")
+
+
     )
-    _dataTest1 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/MMSS12-7f.th")
-    _dataTest2 = reformat_th_to_data("C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT11_lambda02_antiparallel.th")
-    #specimen = demo_data_classical_Thellier.get("MARYTEST")
 
+    ##Plot comparison between experimental and model
+    _dataTest1 = reformat_th_to_data(f"{folderPath}MMSS13-1A.th")
+    _dataTest2 = reformat_th_to_data(f"{folderPath}modres_customT22_lambda010_theta159.th")
     specimen1 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest1)
     AraiData1 = graphing.plot_arai(specimen1)
     print(AraiData1)
-    #plot_data(AraiData1)
-
     specimen2 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest2)
     AraiData2 = graphing.plot_arai(specimen2)
     print(AraiData2)
-    #plot_data(AraiData2)
+    plot_data((AraiData1, "MMSS13-1A - measured data", "royalblue"), (AraiData2, "modres_customT22_lambda010_theta159 - modelled results", "orange"))
 
-    plot_data((AraiData1, "MMSS12.7f - measured data", "royalblue"), (AraiData2, "modres_customT11_lambda02_antiparallel_B1 - modelled results", "orange"))
+    
+   
 
+       
 
+folderPath = "C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/ABPhenmod/Phenom_mod_ZIP/"
 
 main() 
 
