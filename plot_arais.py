@@ -158,6 +158,7 @@ def calc_area(x_values, y_values):
 
 def run_together(filepath):
     """Inputs filepath to a .th file and returns formatted datapoints for an Arai plot"""
+
     _data = reformat_th_to_data(filepath)
     print(filepath)
     print(_data)
@@ -171,24 +172,28 @@ def main():
 
     # Generate a sequential colormap
     cmap = plt.get_cmap('viridis')
-    num_colors = 3  # Number of datasets to plot
+    num_colors = 4  # Number of datasets to plot
     colors = [cmap(i / num_colors) for i in range(num_colors)]
 
 
-    AraiData_exp = run_together(f"{folderPath}MMSS13-2A.th")
-    AraiData_lambda020 = run_together(f"{folderPath}modres_customT32_lambda020_theta162.th")
-    AraiData_lambda040 = run_together(f"{folderPath}modres_customT32_lambda040_theta162.th")
-    AraiData_lambda060 = run_together(f"{folderPath}modres_customT32_lambda060_theta162.th")
+    AraiData_exp = run_together(f"{folderPath}MMSS13-1A.th")
+    plot_data(0,20,(AraiData_exp, "MMSS13-1A - measured data", "orange"))
+
+
+    AraiData_lambda020 = run_together(f"{folderPath}modres_customT34_lambda020_theta152.th")
+    AraiData_lambda030 = run_together(f"{folderPath}modres_customT34_lambda030_theta152.th")
+    AraiData_lambda040 = run_together(f"{folderPath}modres_customT34_lambda040_theta152.th")
+
     
 
 
 
     ##Plot a bunch of models
     plot_data(0, 20,
-        (AraiData_lambda020, "lambda 0.20, theta162, customT32", colors[0]),
-        (AraiData_lambda040, "lambda 0.40, theta162, customT32", colors[1]),
-        (AraiData_lambda060, "lambda 0.60, theta162, customT32", colors[2]),
-        (AraiData_exp, "MMSS13-2A - measured data", "orange")
+        (AraiData_lambda020, "lambda 0.2, theta152, customT34", cmap(0.2)),
+        (AraiData_lambda030, "lambda 0.3, theta152, customT34", cmap(0.3)),
+        (AraiData_lambda040, "lambda 0.4, theta152, customT34", cmap(0.4)),
+        (AraiData_exp, "MMSS13-1A - measured data", "orange")
 
 
     )
