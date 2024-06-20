@@ -176,42 +176,18 @@ def main():
     colors = [cmap(i / num_colors) for i in range(num_colors)]
 
 
-    AraiData_exp = run_together(f"{folderPath}MMSS13-1A.th")
-    plot_data(0,20,(AraiData_exp, "MMSS13-1A - measured data", "orange"))
+    AraiData_exp = run_together(f"{folderPath}MMSS13-7A.th")
+    plot_data(0,200,(AraiData_exp, "Experimental data", "orange"))
 
 
-    AraiData_lambda020 = run_together(f"{folderPath}modres_customT34_lambda020_theta152.th")
-    AraiData_lambda030 = run_together(f"{folderPath}modres_customT34_lambda030_theta152.th")
-    AraiData_lambda040 = run_together(f"{folderPath}modres_customT34_lambda040_theta152.th")
+    AraiData_prefModel = run_together(f"{folderPath}modres_customT54_lambda014_theta014.th")
 
-    
-
-
-
-    ##Plot a bunch of models
-    plot_data(0, 20,
-        (AraiData_lambda020, "lambda 0.2, theta152, customT34", cmap(0.2)),
-        (AraiData_lambda030, "lambda 0.3, theta152, customT34", cmap(0.3)),
-        (AraiData_lambda040, "lambda 0.4, theta152, customT34", cmap(0.4)),
-        (AraiData_exp, "MMSS13-1A - measured data", "orange")
+    plot_data(0, 200,
+        (AraiData_prefModel, "lambda 0.14, theta 014, customT54", "blue"),
+        (AraiData_exp, "MMSS13-7A - measured data", "orange")
 
 
     )
-
-    ##Plot comparison between experimental and model
-    _dataTest1 = reformat_th_to_data(f"{folderPath}MMSS13-1A.th")
-    _dataTest2 = reformat_th_to_data(f"{folderPath}modres_customT22_lambda010_theta159.th")
-    specimen1 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest1)
-    AraiData1 = graphing.plot_arai(specimen1)
-    print(AraiData1)
-    specimen2 = demo_data_classical_Thellier._demo_data_to_real_format_thermal(_dataTest2)
-    AraiData2 = graphing.plot_arai(specimen2)
-    print(AraiData2)
-    plot_data((AraiData1, "MMSS13-1A - measured data", "royalblue"), (AraiData2, "modres_customT22_lambda010_theta159 - modelled results", "orange"))
-
-    
-   
-
        
 
 folderPath = "C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/ABPhenmod/Phenom_mod_ZIP/"
