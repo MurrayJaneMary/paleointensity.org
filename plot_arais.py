@@ -66,9 +66,9 @@ def straight_line(m, x, c):
     y=m*x+c
     return y
 
+
 def plot_data(startStep=0, endStep=100, *AraiData):
-    #print(AraiData)
-    plt.figure(figsize=(8,5))
+    plt.figure(figsize=(12, 5))  # Increased figure size to accommodate the table
 
     for data, legend_label, colour in AraiData:
         ptrm_gained = data[0]
@@ -91,44 +91,40 @@ def plot_data(startStep=0, endStep=100, *AraiData):
                     y_values.append(yvalue)
                     step_labels.append(step_temp)
 
-        plt.plot(x_values, y_values, marker='.', label=legend_label, color=colour, alpha=0.3)
-        plt.plot(x_values[startStep:endStep], y_values[startStep:endStep], marker='o', label=legend_label, color=colour, alpha=0.7)
-        print("/n")
-        print(legend_label, "/n")
+        plt.plot(x_values, y_values, marker='.', label=legend_label,
+                 color=colour, alpha=0.3)
+        plt.plot(x_values[startStep:endStep], y_values[startStep:endStep],
+                 marker='o', label=legend_label, color=colour, alpha=0.7)
+
+        # Print statements for debugging
+        print("\n")
+        print(legend_label, "\n")
         print(x_values, y_values)
-        print("/n")
+        print("\n")
         print(x_values[startStep:endStep], y_values[startStep:endStep])
-        
-        # Add label for each point
-        for i, label in enumerate(step_labels):
-            plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  
-        
-        # Add pTRM check line
-        for i in range(len(ptrmCheck)):        
-            start_point = (ptrmCheck[i][3], ptrmCheck[i][4])
-            end_point = (ptrmCheck[i][1],ptrmCheck[i][2])
-            #plt.annotate('', xy=start_point, xytext=mid_point, arrowprops=dict(facecolor='black', arrowstyle='-'))
-            plt.annotate('', xy=start_point, xytext=end_point, arrowprops=dict(alpha= 0.4, facecolor=colour, arrowstyle='<-', connectionstyle="angle,angleA=-90,angleB=180,rad=0"))
-            plt.plot(ptrmCheck[i][1], ptrmCheck[i][2], marker='^', color=colour, alpha=0.4)
 
-       
-
+        # Create a table with the data values
+        table_data = list(zip(x_values[startStep:endStep],
+                              y_values[startStep:endStep]))
+        col_labels = ['x values', 'y values']
+        row_labels = [f'Step {i}' for i in range(startStep, endStep)]
         
-       # Calculate the area under the curve using trapezoidal integration
-        area = trapz(y_values, x=x_values)
+        # Add the table to the plot
+        table = plt.table(cellText=table_data,
+                          colLabels=col_labels,
+                          colWidths=[0.2,0.2] ,
+                          loc='left', cellLoc='center',
+                          bbox=[-0.5, 0, 0.8, 1])
         
-        print(f'Area for {legend_label} is {area}, theorectical area 0.5  so a difference of {0.5 - area}')
+        # Adjust layout to make room for the table
+        plt.subplots_adjust(left=0.2, bottom=0.4)
 
-        area_difference = calc_area(x_values, y_values)
-        print(f'Area difference for {legend_label} is {area_difference}')
-
-    plt.ylim(0, None)
-    plt.xlabel('pTRM gained/NRM0')
-    plt.ylabel('NRM remaining/NRM0')
     plt.legend()
-
-
+    plt.title('Scatter Plot with Data Table')
+    plt.xlabel('PTRM Gained')
+    plt.ylabel('NRM Remaining')
     plt.show()
+
 
 def calc_area(x_values, y_values):
     #calculate the difference between the points and an ideal line
