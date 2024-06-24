@@ -13,6 +13,7 @@ from scipy.integrate import trapz
 import numpy as np
 
 def reformat_th_to_data(filename):
+    """Inputs a .th Utrecht format file and converts it to paleointensity.org's internal data format. """
     with open(filename, 'r') as infile:
         _data = []
         nline = -1 #I want it to be zero-indexed, but I also need to increment at the start of the loop because of the continue statements
@@ -97,9 +98,10 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         print(x_values, y_values)
         print("/n")
         print(x_values[startStep:endStep], y_values[startStep:endStep])
-
-        #for i, label in enumerate(step_labels):
-            #plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  # Add label for each point
+        
+        # Add label for each point
+        for i, label in enumerate(step_labels):
+            plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  
         
         # Add pTRM check line
         for i in range(len(ptrmCheck)):        
