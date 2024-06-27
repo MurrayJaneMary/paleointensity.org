@@ -95,6 +95,10 @@ def plot_data(startStep=0, endStep=100, *AraiData):
                  color=colour, alpha=0.3)
         plt.plot(x_values[startStep:endStep], y_values[startStep:endStep],
                  marker='o', label=legend_label, color=colour, alpha=0.7)
+        
+                # Add label for each point
+        for i, label in enumerate(step_labels):
+            plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  
 
         # Print statements for debugging
         print("\n")
@@ -103,24 +107,24 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         print("\n")
         print(x_values[startStep:endStep], y_values[startStep:endStep])
 
-        # Create a table with the data values
-        table_data = list(zip(x_values[startStep:endStep],
-                              y_values[startStep:endStep]))
-        col_labels = ['x values', 'y values']
-        row_labels = [f'Step {i}' for i in range(startStep, endStep)]
+        # # Create a table with the data values
+        # table_data = list(zip(x_values[startStep:endStep],
+        #                       y_values[startStep:endStep]))
+        # col_labels = ['x values', 'y values']
+        # row_labels = [f'Step {i}' for i in range(startStep, endStep)]
         
-        # Add the table to the plot
-        table = plt.table(cellText=table_data,
-                          colLabels=col_labels,
-                          colWidths=[0.2,0.2] ,
-                          loc='left', cellLoc='center',
-                          bbox=[-0.5, 0, 0.8, 1])
+        # # Add the table to the plot
+        # table = plt.table(cellText=table_data,
+        #                   colLabels=col_labels,
+        #                   colWidths=[0.2,0.2] ,
+        #                   loc='left', cellLoc='center',
+        #                   bbox=[-0.5, 0, 0.8, 1])
         
-        # Adjust layout to make room for the table
-        plt.subplots_adjust(left=0.2, bottom=0.4)
+        # # Adjust layout to make room for the table
+        # plt.subplots_adjust(left=0.2, bottom=0.4)
 
     plt.legend()
-    plt.title('Scatter Plot with Data Table')
+    plt.title('Arai plot')
     plt.xlabel('PTRM Gained')
     plt.ylabel('NRM Remaining')
     plt.show()
