@@ -1,5 +1,12 @@
 
-import os
-file_path = 'C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/Phenom_mod_ZIP/modres_customT19_lambda001_parallel_B1.th'
-if not os.path.isfile(file_path):
-    raise FileNotFoundError(f"File not found: {file_path}")
+exp="MMSS13-1A"
+lamda = 0.20
+theta = 172
+customT = 65
+
+
+# Format lamda to appear as 020
+lamda_formatted = f"{lamda:.2f}".replace('.', '')
+
+modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}.th'
+print(modelFile)

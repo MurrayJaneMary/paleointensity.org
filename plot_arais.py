@@ -69,8 +69,8 @@ def straight_line(m, x, c):
 
 def plot_data(startStep=0, endStep=100, *AraiData):
     plt.figure(figsize=(12, 5))  # Increased figure size to accommodate the table
-
-    for data, legend_label, colour in AraiData:
+    plotTitle = "AraiComparison"
+    for data, legend_label, title, colour in AraiData:
         ptrm_gained = data[0]
         nrm_rem = data[1]
         ptrmCheck = data[2]
@@ -91,10 +91,10 @@ def plot_data(startStep=0, endStep=100, *AraiData):
                     y_values.append(yvalue)
                     step_labels.append(step_temp)
 
-        plt.plot(x_values, y_values, marker='.', label=legend_label,
-                 color=colour, alpha=0.3)
-        plt.plot(x_values[startStep:endStep], y_values[startStep:endStep],
-                 marker='o', label=legend_label, color=colour, alpha=0.7)
+        plt.plot(x_values, y_values, marker='o', label=legend_label,
+                 color=colour, alpha=0.7)
+        # plt.plot(x_values[startStep:endStep], y_values[startStep:endStep],
+        #          marker='o', label=legend_label, color=colour, alpha=0.7)
         
                 # Add label for each point
         for i, label in enumerate(step_labels):
@@ -122,11 +122,14 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         
         # # Adjust layout to make room for the table
         # plt.subplots_adjust(left=0.2, bottom=0.4)
+        plotTitle += '_'
+        plotTitle += title
 
     plt.legend()
     plt.title('Arai plot')
     plt.xlabel('PTRM Gained')
     plt.ylabel('NRM Remaining')
+    plt.savefig(f'{folderPath}{plotTitle}.png')    
     plt.show()
 
 
@@ -168,6 +171,16 @@ def run_together(filepath):
     AraiData = graphing.plot_arai(specimen)
     return AraiData
 
+def modelNaming(customT, lamda, theta):
+    # Format lamda to appear as 020
+    lamda_formatted = f"{lamda:.2f}".replace('.', '')
+    
+    modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}.th'
+    modelLegend = f"Model: customT{customT} lambda={lamda_formatted} theta={theta}"
+    modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}'
+    return modelFile, modelLegend, modelTitle
+
+
 
 
 def main():
@@ -177,19 +190,38 @@ def main():
     num_colors = 4  # Number of datasets to plot
     colors = [cmap(i / num_colors) for i in range(num_colors)]
 
+    expTitle="MMSS13-1A"
+    lamda = 0.20
+    theta = 172
+    customT = 65
 
-    AraiData_exp = run_together(f"{folderPath}MMSS13-7A.th")
-    plot_data(0,200,(AraiData_exp, "Experimental data", "orange"))
 
+    # Format lamda to appear as 020
+    lamda_formatted = f"{lamda:.2f}".replace('.', '')
 
-    AraiData_prefModel = run_together(f"{folderPath}modres_customT54_lambda014_theta014.th")
+    modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}.th'
+    modelLegend = f"Model: customT{customT} lambda={lamda_formatted} theta={theta}"
+    modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}'
 
+    AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
+    AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
     plot_data(0, 200,
-        (AraiData_prefModel, "lambda 0.14, theta 014, customT54", "blue"),
-        (AraiData_exp, "MMSS13-7A - measured data", "orange")
+        (AraiData_prefModel, modelLegend, modelTitle, "blue"),
+        (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
+        )
+    
+    expTitle = "MMSS13-1C"
+    modelFile, modelLegend, modelTitle =(65, 0.2, 28)
+    AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
+    AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
+    plot_data(0, 200,
+        (AraiData_prefModel, modelLegend, modelTitle, "blue"),
+        (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
+        )
 
 
-    )
+
+
        
 
 folderPath = "C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/ABPhenmod/Phenom_mod_ZIP/"
