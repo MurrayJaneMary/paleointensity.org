@@ -171,13 +171,22 @@ def run_together(filepath):
     AraiData = graphing.plot_arai(specimen)
     return AraiData
 
-def modelNaming(customT, lamda, theta):
+def modelNaming(customT, lamda, theta, B):
     # Format lamda to appear as 020
     lamda_formatted = f"{lamda:.2f}".replace('.', '')
+    theta_formatted = f"{theta:03}"
+    B_formatted = f"{B:.3f}".replace('.', '')
     
-    modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}.th'
-    modelLegend = f"Model: customT{customT} lambda={lamda_formatted} theta={theta}"
-    modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}'
+    if B ==1:
+        modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}.th'
+        modelLegend = f"Model: customT{customT} lambda={lamda:.2f} theta={theta_formatted}\N{DEGREE SIGN}"
+        modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}'
+    
+    else: 
+        modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}.th'
+        modelLegend = f"Model: customT{customT} lambda={lamda:.2f} theta={theta_formatted}\N{DEGREE SIGN} B={B:.3f}"
+        modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}'
+
     return modelFile, modelLegend, modelTitle
 
 
@@ -190,35 +199,48 @@ def main():
     num_colors = 4  # Number of datasets to plot
     colors = [cmap(i / num_colors) for i in range(num_colors)]
 
-    expTitle="MMSS13-1A"
-    lamda = 0.20
-    theta = 172
-    customT = 65
+    expTitle="MMSS12-2A"
+    customT = 80
+    lamda = 0.28
+    theta = 27
+    B=0.796
 
-
-    # Format lamda to appear as 020
-    lamda_formatted = f"{lamda:.2f}".replace('.', '')
-
-    modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}.th'
-    modelLegend = f"Model: customT{customT} lambda={lamda_formatted} theta={theta}"
-    modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta}'
+    modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
 
     AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
+    plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange"))
+
     AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
     plot_data(0, 200,
         (AraiData_prefModel, modelLegend, modelTitle, "blue"),
         (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
         )
     
-    expTitle = "MMSS13-1C"
-    modelFile, modelLegend, modelTitle =(65, 0.2, 28)
-    AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
-    AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
-    plot_data(0, 200,
-        (AraiData_prefModel, modelLegend, modelTitle, "blue"),
-        (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
-        )
+    # lamda=0.1
+    # modelFile010, modelLegend010, modelTitle010 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda010 = run_together(f"{folderPath}{modelFile010}")
 
+    # lamda=0.2
+    # modelFile020, modelLegend020, modelTitle020 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda020 = run_together(f"{folderPath}{modelFile020}")
+
+    # lamda=0.3
+    # modelFile030, modelLegend030, modelTitle030 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda030 = run_together(f"{folderPath}{modelFile030}")
+
+    # lamda=0.4
+    # modelFile040, modelLegend040, modelTitle040 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda040 = run_together(f"{folderPath}{modelFile040}")
+
+    # plot_data(0, 200,
+    #     (AraiData_Model_lambda010, modelLegend010, modelTitle010, colors[0]),
+    #     (AraiData_Model_lambda020, modelLegend020, modelTitle020, colors[1]),
+    #     (AraiData_Model_lambda030, modelLegend030, modelTitle030, colors[2]),
+    #     (AraiData_Model_lambda040, modelLegend040, modelTitle040, colors[3]),
+    #     (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
+    #     )
+
+    
 
 
 
