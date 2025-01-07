@@ -9,6 +9,8 @@ Date: December 2023
 import demo_data_classical_Thellier
 import graphing
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator
+
 from scipy.integrate import trapz
 import numpy as np
 
@@ -72,7 +74,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
     #Aesthitic choices
     #figure size is set in inches 
     plt.figure(figsize=(3, 3))  
-    legend_fs = 8 
+    legend_fs = 5 
     legendTxtColor = "#595959" #dark grey
 
 
@@ -109,6 +111,12 @@ def plot_data(startStep=0, endStep=100, *AraiData):
 
         plt.ylim(0, 2)
         plt.xlim(0, 2)
+
+        ax = plt.gca()
+        # Set major tick intervals to 0.5 for both axes
+        ax.xaxis.set_major_locator(MultipleLocator(0.5))
+        ax.yaxis.set_major_locator(MultipleLocator(0.5))
+
         # Print statements for debugging
         print("\n")
         print("title", title, "\n")
@@ -137,8 +145,8 @@ def plot_data(startStep=0, endStep=100, *AraiData):
 
     plt.legend(fontsize =legend_fs, prop={"style": "italic"}, labelcolor = legendTxtColor)
     plt.title(title)
-    #plt.xlabel('pTRM Gained / NRM0')
-    #plt.ylabel('NRM Remaining / NRM0')
+    plt.xlabel('pTRM Gained / NRM0')
+    plt.ylabel('NRM Remaining / NRM0')
     plt.savefig(f'{folderPath}{plotTitle}.png')    
     plt.show()
 
@@ -194,7 +202,7 @@ def modelNaming(customT, lamda, theta, B):
     
     else: 
         modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}.th'
-        modelLegend = f"Model:\n T{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} B={B:.3f}"
+        modelLegend = f"Model:\nT{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} B={B:.3f}"
         modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}'
 
     return modelFile, modelLegend, modelTitle
