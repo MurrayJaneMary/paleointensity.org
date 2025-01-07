@@ -68,7 +68,14 @@ def straight_line(m, x, c):
 
 
 def plot_data(startStep=0, endStep=100, *AraiData):
-    plt.figure(figsize=(12, 5))  # Increased figure size to accommodate the table
+    
+    #Aesthitic choices
+    #figure size is set in inches 
+    plt.figure(figsize=(3, 3))  
+    legend_fs = 8 
+    legendTxtColor = "#595959" #dark grey
+
+
     plotTitle = "AraiComparison"
     for data, legend_label, title, colour in AraiData:
         ptrm_gained = data[0]
@@ -97,12 +104,15 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         #          marker='o', label=legend_label, color=colour, alpha=0.7)
         
                 # Add label for each point
-        for i, label in enumerate(step_labels):
-            plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  
+        #for i, label in enumerate(step_labels):
+        #    plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  
 
+        plt.ylim(0, 2)
+        plt.xlim(0, 2)
         # Print statements for debugging
         print("\n")
-        print(legend_label, "\n")
+        print("title", title, "\n")
+        print("legend_label", legend_label, "\n")
         print(x_values, y_values)
         print("\n")
         print(x_values[startStep:endStep], y_values[startStep:endStep])
@@ -125,10 +135,10 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         plotTitle += '_'
         plotTitle += title
 
-    plt.legend()
-    plt.title('Arai plot')
-    plt.xlabel('PTRM Gained')
-    plt.ylabel('NRM Remaining')
+    plt.legend(fontsize =legend_fs, prop={"style": "italic"}, labelcolor = legendTxtColor)
+    plt.title(title)
+    #plt.xlabel('pTRM Gained / NRM0')
+    #plt.ylabel('NRM Remaining / NRM0')
     plt.savefig(f'{folderPath}{plotTitle}.png')    
     plt.show()
 
@@ -179,12 +189,12 @@ def modelNaming(customT, lamda, theta, B):
     
     if B ==1:
         modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}.th'
-        modelLegend = f"Model: customT{customT} lambda={lamda:.2f} theta={theta_formatted}\N{DEGREE SIGN}"
+        modelLegend = f"Model: T{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN}"
         modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}'
     
     else: 
         modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}.th'
-        modelLegend = f"Model: customT{customT} lambda={lamda:.2f} theta={theta_formatted}\N{DEGREE SIGN} B={B:.3f}"
+        modelLegend = f"Model:\n T{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} B={B:.3f}"
         modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}'
 
     return modelFile, modelLegend, modelTitle
@@ -194,14 +204,17 @@ def modelNaming(customT, lamda, theta, B):
 
 def main():
 
+    ##aesthetic choices
+    colorModel = "#e60073"
+    colorExp = "#3900e6"
+
     # Generate a sequential colormap
     cmap = plt.get_cmap('viridis')
     num_colors = 4  # Number of datasets to plot
     colors = [cmap(i / num_colors) for i in range(num_colors)]
 
-    colorModel = "#e60073"
-    colorExp = "#3900e6"
 
+    ##Model and data to plot
     expTitle="MMSS12-2A"
     customT = 80
     lamda = 0.28
@@ -253,8 +266,3 @@ folderPath = "C:/Users/murray98/Documents/Paleointensity/MD_phenom_mod/ABPhenmod
 
 main() 
 
-##Testing
-#test_x = [0,1,3,2,5]
-#test_y = [10,10,8,2,0]
-#test_area = calc_area(test_x, test_y)
-#print(test_area)
