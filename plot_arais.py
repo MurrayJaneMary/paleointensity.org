@@ -199,6 +199,9 @@ def main():
     num_colors = 4  # Number of datasets to plot
     colors = [cmap(i / num_colors) for i in range(num_colors)]
 
+    colorModel = "#e60073"
+    colorExp = "#3900e6"
+
     expTitle="MMSS12-2A"
     customT = 80
     lamda = 0.28
@@ -208,12 +211,12 @@ def main():
     modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
 
     AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
-    plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange"))
+    plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp))
 
     AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
     plot_data(0, 200,
-        (AraiData_prefModel, modelLegend, modelTitle, "blue"),
-        (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
+        (AraiData_prefModel, modelLegend, modelTitle, colorModel),
+        (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp)
         )
     
     # lamda=0.1
