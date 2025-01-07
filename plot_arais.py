@@ -202,7 +202,7 @@ def modelNaming(customT, lamda, theta, B):
     
     else: 
         modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}.th'
-        modelLegend = f"Model:\nT{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} B={B:.3f}"
+        modelLegend = f"Model:\nT{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} Hanc/Hlab={B:.3f}"
         modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}'
 
     return modelFile, modelLegend, modelTitle
@@ -237,7 +237,7 @@ def main():
     AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
     plot_data(0, 200,
         (AraiData_prefModel, modelLegend, modelTitle, colorModel),
-        (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp)
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
         )
     
     # lamda=0.1
