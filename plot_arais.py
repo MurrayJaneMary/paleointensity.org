@@ -13,6 +13,7 @@ from matplotlib.ticker import MultipleLocator
 
 from scipy.integrate import trapz
 import numpy as np
+import pandas as pd
 
 def reformat_th_to_data(filename):
     """Inputs a .th Utrecht format file and converts it to paleointensity.org's internal data format. """
@@ -147,7 +148,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
     plt.title(title)
     plt.xlabel('pTRM Gained / NRM0')
     plt.ylabel('NRM Remaining / NRM0')
-    plt.savefig(f'{folderPath}{plotTitle}.png')    
+    plt.savefig(f'{folderPath}{plotTitle}.svg')    
     plt.show()
 
 
@@ -190,20 +191,20 @@ def run_together(filepath):
     return AraiData
 
 def modelNaming(customT, lamda, theta, B):
-    # Format lamda to appear as 020
+    # Format lamda to appear as 020 for 0.20
     lamda_formatted = f"{lamda:.2f}".replace('.', '')
     theta_formatted = f"{theta:03}"
     B_formatted = f"{B:.3f}".replace('.', '')
     
     if B ==1:
-        modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}.th'
-        modelLegend = f"Model: T{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN}"
+        modelFile = f'modres_custom{customT}_lambda{lamda_formatted}_theta{theta_formatted}.th'
+        modelLegend = f"Model: {customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN}"
         modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}'
     
     else: 
-        modelFile = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}.th'
-        modelLegend = f"Model:\nT{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} Hanc/Hlab={B:.3f}"
-        modelTitle = f'modres_customT{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}'
+        modelFile = f'modres_custom{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}.th'
+        modelLegend = f"Model:\n{customT} λ={lamda:.2f} θ={theta_formatted}\N{DEGREE SIGN} Hanc/Hlab={B:.3f}"
+        modelTitle = f'modres_custom{customT}_lambda{lamda_formatted}_theta{theta_formatted}_B{B_formatted}'
 
     return modelFile, modelLegend, modelTitle
 
@@ -224,7 +225,7 @@ def main():
 
     ##Model and data to plot
     expTitle="MMSS12-2A"
-    customT = 80
+    customT = 'T80'
     lamda = 0.28
     theta = 27
     B=0.796
@@ -240,6 +241,46 @@ def main():
         (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
         )
     
+    
+    dfModelparams = pd.read_csv('Modelling_parameters_2025_01_07.csv')
+    #print(dfModelparams)
+
+    for index, row in dfModelparams.iterrows():
+        customT = row['Tprofile']
+        lamda = float(row['lambda'])
+        B = float(row['Hanc'])
+
+        expTitle = row['name'] + row['high angle slice']
+        print(expTitle)
+        theta = float(row['high angle theta']) #I don't really like this but it's just for naming and displaying, not for calculating
+        theta = round(theta)
+
+        modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
+        AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
+        plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp))
+
+        AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
+        plot_data(0, 200,
+        (AraiData_prefModel, modelLegend, modelTitle, colorModel),
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
+        )
+
+        expTitle = row['name'] + row['low angle slice']
+        print(expTitle)
+        theta = float(row['low angle theta'])
+        theta = round(theta)
+        modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
+        AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
+        plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp))
+
+        AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
+        plot_data(0, 200,
+        (AraiData_prefModel, modelLegend, modelTitle, colorModel),
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
+        )
+
+
+
     # lamda=0.1
     # modelFile010, modelLegend010, modelTitle010 = modelNaming(customT, lamda, theta, B)
     # AraiData_Model_lambda010 = run_together(f"{folderPath}{modelFile010}")
