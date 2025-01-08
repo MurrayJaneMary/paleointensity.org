@@ -110,6 +110,14 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         #for i, label in enumerate(step_labels):
         #    plt.text(x_values[i], y_values[i], str(label), ha='right', va='bottom')  
 
+                # Add pTRM check line
+        for i in range(len(ptrmCheck)):        
+            start_point = (ptrmCheck[i][3], ptrmCheck[i][4])
+            end_point = (ptrmCheck[i][1],ptrmCheck[i][2])
+            #plt.annotate('', xy=start_point, xytext=mid_point, arrowprops=dict(facecolor='black', arrowstyle='-'))
+            plt.annotate('', xy=start_point, xytext=end_point, arrowprops=dict(alpha= 0.4, facecolor=colour, arrowstyle='<-', connectionstyle="angle,angleA=-90,angleB=180,rad=0"))
+            plt.plot(ptrmCheck[i][1], ptrmCheck[i][2], marker='^', color=colour, alpha=0.4)
+
         plt.ylim(0, 2)
         plt.xlim(0, 2)
 
