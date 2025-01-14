@@ -74,7 +74,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
     
     #Aesthitic choices
     #figure size is set in inches 
-    plt.figure(figsize=(3, 3))  
+    plt.figure(figsize=(4, 3))  
     legend_fs = 5 
     legendTxtColor = "#595959" #dark grey
 
@@ -118,13 +118,14 @@ def plot_data(startStep=0, endStep=100, *AraiData):
             plt.annotate('', xy=start_point, xytext=end_point, arrowprops=dict(alpha= 0.4, facecolor=colour, arrowstyle='<-', connectionstyle="angle,angleA=-90,angleB=180,rad=0"))
             plt.plot(ptrmCheck[i][1], ptrmCheck[i][2], marker='^', color=colour, alpha=0.4)
 
-        plt.ylim(0, 2)
+        plt.ylim(0, 1.2)
         plt.xlim(0, 2)
 
         ax = plt.gca()
         # Set major tick intervals to 0.5 for both axes
         ax.xaxis.set_major_locator(MultipleLocator(0.5))
         ax.yaxis.set_major_locator(MultipleLocator(0.5))
+        plt.gca().set_aspect('equal', adjustable='box')
 
         # Print statements for debugging
         print("\n")
@@ -152,7 +153,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         plotTitle += '_'
         plotTitle += title
 
-    plt.legend(fontsize =legend_fs, prop={"style": "italic"}, labelcolor = legendTxtColor)
+    #plt.legend(fontsize =legend_fs, prop={"style": "italic"}, labelcolor = legendTxtColor)
     plt.title(title)
     plt.xlabel('pTRM Gained / NRM0')
     plt.ylabel('NRM Remaining / NRM0')
