@@ -80,7 +80,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
 
 
     plotTitle = "AraiComparison"
-    for data, legend_label, title, colour in AraiData:
+    for data, legend_label, title, colour, theta in AraiData:
         ptrm_gained = data[0]
         nrm_rem = data[1]
         ptrmCheck = data[2]
@@ -127,6 +127,8 @@ def plot_data(startStep=0, endStep=100, *AraiData):
         ax.yaxis.set_major_locator(MultipleLocator(0.5))
         plt.gca().set_aspect('equal', adjustable='box')
 
+    
+
         # Print statements for debugging
         print("\n")
         print("title", title, "\n")
@@ -155,6 +157,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
 
     #plt.legend(fontsize =legend_fs, prop={"style": "italic"}, labelcolor = legendTxtColor)
     plt.title(title)
+    plt.text(1,0.8, f'θ={theta}\N{DEGREE SIGN}')
     plt.xlabel('pTRM Gained / NRM0')
     plt.ylabel('NRM Remaining / NRM0')
     plt.savefig(f'{folderPath}{plotTitle}.svg')    
@@ -226,12 +229,6 @@ def main():
     colorModel = "#e60073"
     colorExp = "#3900e6"
 
-    # Generate a sequential colormap
-    cmap = plt.get_cmap('viridis')
-    num_colors = 4  # Number of datasets to plot
-    colors = [cmap(i / num_colors) for i in range(num_colors)]
-
-
     ##Model and data to plot
     expTitle="MMSS12-2A"
     customT = 'T80'
@@ -302,17 +299,7 @@ def main():
     # modelFile030, modelLegend030, modelTitle030 = modelNaming(customT, lamda, theta, B)
     # AraiData_Model_lambda030 = run_together(f"{folderPath}{modelFile030}")
 
-    # lamda=0.4
-    # modelFile040, modelLegend040, modelTitle040 = modelNaming(customT, lamda, theta, B)
-    # AraiData_Model_lambda040 = run_together(f"{folderPath}{modelFile040}")
 
-    # plot_data(0, 200,
-    #     (AraiData_Model_lambda010, modelLegend010, modelTitle010, colors[0]),
-    #     (AraiData_Model_lambda020, modelLegend020, modelTitle020, colors[1]),
-    #     (AraiData_Model_lambda030, modelLegend030, modelTitle030, colors[2]),
-    #     (AraiData_Model_lambda040, modelLegend040, modelTitle040, colors[3]),
-    #     (AraiData_exp, f"Observed data: {expTitle}", expTitle, "orange")
-    #     )
 
     
 
