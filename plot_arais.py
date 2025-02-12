@@ -239,12 +239,12 @@ def main():
     modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
 
     AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
-    plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp))
+    plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp, theta))
 
     AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
     plot_data(0, 200,
-        (AraiData_prefModel, modelLegend, modelTitle, colorModel),
-        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
+        (AraiData_prefModel, modelLegend, modelTitle, colorModel, theta),
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp, theta)
         )
     
     
@@ -263,12 +263,12 @@ def main():
 
         modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
         AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
-        plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp))
+        plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp, theta))
 
         AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
         plot_data(0, 200,
-        (AraiData_prefModel, modelLegend, modelTitle, colorModel),
-        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
+        (AraiData_prefModel, modelLegend, modelTitle, colorModel, theta),
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp, theta)
         )
 
         expTitle = row['name'] + row['low angle slice']
@@ -277,12 +277,12 @@ def main():
         theta = round(theta)
         modelFile, modelLegend, modelTitle = modelNaming(customT, lamda, theta, B)
         AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
-        plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp))
+        plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp, theta))
 
         AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
         plot_data(0, 200,
-        (AraiData_prefModel, modelLegend, modelTitle, colorModel),
-        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp)
+        (AraiData_prefModel, modelLegend, modelTitle, colorModel, theta),
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp, theta),
         )
 
 
