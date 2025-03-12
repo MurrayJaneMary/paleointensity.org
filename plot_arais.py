@@ -229,6 +229,46 @@ def main():
     colorModel = "#e60073"
     colorExp = "#3900e6"
 
+    # ##Model and data to plot
+    # expTitle="MMSS13-2A"
+    # customT = 'T51'
+    # lamda = 0.28
+    # theta = 159
+    # B=1
+    
+    # AraiData_exp = run_together(f"{folderPath}{expTitle}.th")
+    # plot_data(0,200, (AraiData_exp, f"Observed data: {expTitle}", expTitle, colorExp, theta))
+
+
+    # lamda=0.1
+    # modelFile010, modelLegend010, modelTitle010 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda010 = run_together(f"{folderPath}{modelFile010}")
+
+    # lamda=0.2
+    # modelFile020, modelLegend020, modelTitle020 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda020 = run_together(f"{folderPath}{modelFile020}")
+
+    # lamda=0.3
+    # modelFile030, modelLegend030, modelTitle030 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda030 = run_together(f"{folderPath}{modelFile030}")
+
+    # lamda=0.4
+    # modelFile040, modelLegend040, modelTitle040 = modelNaming(customT, lamda, theta, B)
+    # AraiData_Model_lambda040 = run_together(f"{folderPath}{modelFile040}")
+
+    # cmap = plt.get_cmap('inferno_r')
+    # num_colors = 4  # Number of datasets to plot
+    # colors = [cmap(i / num_colors) for i in range(num_colors)]
+
+    # plot_data(0, 200,
+    #     (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp, theta),
+    #     (AraiData_Model_lambda010, modelLegend010, modelTitle010, colors[0], theta),
+    #     (AraiData_Model_lambda020, modelLegend020, modelTitle020, colors[1], theta),
+    #     (AraiData_Model_lambda030, modelLegend030, modelTitle030, colors[2], theta),
+    #     (AraiData_Model_lambda040, modelLegend040, modelTitle040, colors[3], theta),
+
+    #     )
+
     ##Model and data to plot
     expTitle="MMSS12-2A"
     customT = 'T80'
@@ -282,22 +322,9 @@ def main():
         AraiData_prefModel = run_together(f"{folderPath}{modelFile}")
         plot_data(0, 200,
         (AraiData_prefModel, modelLegend, modelTitle, colorModel, theta),
-        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp, theta),
+        (AraiData_exp, f"Observed data:\n{expTitle}", expTitle, colorExp, theta)
         )
-
-
-
-    # lamda=0.1
-    # modelFile010, modelLegend010, modelTitle010 = modelNaming(customT, lamda, theta, B)
-    # AraiData_Model_lambda010 = run_together(f"{folderPath}{modelFile010}")
-
-    # lamda=0.2
-    # modelFile020, modelLegend020, modelTitle020 = modelNaming(customT, lamda, theta, B)
-    # AraiData_Model_lambda020 = run_together(f"{folderPath}{modelFile020}")
-
-    # lamda=0.3
-    # modelFile030, modelLegend030, modelTitle030 = modelNaming(customT, lamda, theta, B)
-    # AraiData_Model_lambda030 = run_together(f"{folderPath}{modelFile030}")
+    
 
 
 
