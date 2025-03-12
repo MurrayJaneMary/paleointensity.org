@@ -118,7 +118,7 @@ def plot_data(startStep=0, endStep=100, *AraiData):
             plt.annotate('', xy=start_point, xytext=end_point, arrowprops=dict(alpha= 0.4, facecolor=colour, arrowstyle='<-', connectionstyle="angle,angleA=-90,angleB=180,rad=0"))
             plt.plot(ptrmCheck[i][1], ptrmCheck[i][2], marker='^', color=colour, alpha=0.4)
 
-        plt.ylim(0, 1.2)
+        plt.ylim(0, 1.25)
         plt.xlim(0, 2)
 
         ax = plt.gca()
